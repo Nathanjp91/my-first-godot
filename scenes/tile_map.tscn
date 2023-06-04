@@ -1,0 +1,82 @@
+[gd_scene load_steps=13 format=3 uid="uid://bujvysiikfxw3"]
+
+[ext_resource type="Texture2D" uid="uid://yqua1okv8mue" path="res://assets/MiniWorldSprites/Nature/WinterTrees.png" id="1_06xmt"]
+[ext_resource type="Script" path="res://scripts/tile_map.gd" id="2_l06kd"]
+[ext_resource type="Texture2D" uid="uid://3kct3kk1q486" path="res://assets/MiniWorldSprites/Ground/TexturedGrass.png" id="2_pn4fv"]
+[ext_resource type="Texture2D" uid="uid://5edkn6bbgrmd" path="res://assets/MiniWorldSprites/Ground/Shore.png" id="3_4c8uk"]
+[ext_resource type="Texture2D" uid="uid://gah4a07f756f" path="res://assets/MiniWorldSprites/Nature/Trees.png" id="4_16lf5"]
+[ext_resource type="Texture2D" uid="uid://bd2lex2prhu6m" path="res://assets/MiniWorldSprites/Ground/Winter.png" id="5_8iv4i"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g8vta"]
+texture = ExtResource("1_06xmt")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n0ofb"]
+texture = ExtResource("2_pn4fv")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x572a"]
+texture = ExtResource("3_4c8uk")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sahc5"]
+texture = ExtResource("4_16lf5")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hfu8f"]
+texture = ExtResource("5_8iv4i")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_uh0s2"]
+sources/2 = SubResource("TileSetAtlasSource_g8vta")
+sources/3 = SubResource("TileSetAtlasSource_n0ofb")
+sources/4 = SubResource("TileSetAtlasSource_x572a")
+sources/5 = SubResource("TileSetAtlasSource_sahc5")
+sources/6 = SubResource("TileSetAtlasSource_hfu8f")
+
+[node name="TileMap" type="TileMap"]
+tile_set = SubResource("TileSet_uh0s2")
+format = 2
+layer_0/name = "Ground"
+layer_1/name = "Foreground"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array()
+script = ExtResource("2_l06kd")
