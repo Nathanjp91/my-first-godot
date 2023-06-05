@@ -1,4 +1,5 @@
-res://scenes/world.tscn
 res://scenes/player.tscn
-res://scripts/player.gd
+res://scenes/world.tscn
 res://scenes/tile_map.tscn
+res://scenes/Camera2D.gd
+res://scripts/tile_map.gd

@@ -1,5 +1,5 @@
-TileMap
 Camera2D
+TileMap
 CollisionShape2D
 MeshInstance2D
 StaticBody2D
