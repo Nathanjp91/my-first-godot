@@ -8,25 +8,32 @@ var TILES = {
 	"Snow": {"id": 6, "size": [8,1]}
 }
 @export var TYPE = FastNoiseLite.TYPE_SIMPLEX
-@export var HEIGHT = 500
-@export var WIDTH = 500
+@export var HEIGHT = 200
+@export var WIDTH = 200
+@export var OCEAN_CUTOFFS = [0.3, 0.35, 0.4, 0.45, 0.5]
+@export var EDGE_CUTOFF = 20
 var rng = RandomNumberGenerator.new()
 # Called when the node enters the scene tree for the first time.
+func deteriorate(x1, x2, cutoff):
+	var dist = cutoff - abs(x1 - x2)
+	var a = 1/(pow(cutoff, 2))
+	return -a * pow(dist, 2)
+
+func base_deteriorate(x1,x2, cutoff):
+	return (abs(x1-x2)-cutoff) * 1.0/cutoff
+
 func subtract_borders(x,y, cutoff):
-	var subdivisions = 1.0/cutoff
-	if x == 0:
-		return -1
-	if y == 0:
-		return -1
+	var subdivisions = 0.5/cutoff
+	var to_subtract = 0.0
 	if x < cutoff:
-		return (x-cutoff)*subdivisions
+		to_subtract += deteriorate(x, 0, cutoff)
 	if y < cutoff:
-		return (y-cutoff)*subdivisions
-#	if WIDTH - x < cutoff:
-#		return -log(WIDTH-x)
-#	if HEIGHT - y < cutoff:
-#		return -log(HEIGHT-y)
-	return 0
+		to_subtract += deteriorate(y, 0, cutoff)
+	if abs(x-WIDTH) < cutoff:
+		to_subtract += deteriorate(x, WIDTH, cutoff)
+	if abs(y-HEIGHT) < cutoff:
+		to_subtract += deteriorate(y, HEIGHT, cutoff)
+	return to_subtract
 
 func _ready():
 	rng.randomize()
@@ -34,26 +41,40 @@ func _ready():
 	heightmap.seed = rng.randf_range(0.0, 99999.0)
 	heightmap.noise_type = TYPE
 	
+	var heights = []
+	var min_height = 1.0
+	var max_height = 0.0
+	for x in HEIGHT:
+		heights.append([])
+		for y in WIDTH:
+			heights[x].append(heightmap.get_noise_2d(x,y) * 0.5 + 0.5)
+		var ma = heights[x].max()
+		var mi = heights[x].min()
+		if mi < min_height:
+			min_height = mi
+		if ma > max_height:
+			max_height = ma
+	var height_diff = max_height - min_height
 
 	var tile = TILES["Grass"]
 	var subtile = Vector2i(0,0)
 	for x in HEIGHT:
 		for y in WIDTH:
-			var h = heightmap.get_noise_2d(x,y) * 0.5 + 0.5
-			h = h + subtract_borders(x,y, 40)
-			if h < 0.3:
+			var h = heights[x][y]
+			h = h + subtract_borders(x,y, EDGE_CUTOFF)
+			if h < OCEAN_CUTOFFS[0] * height_diff:
 				tile = TILES["Shore"]
 				subtile = Vector2i(4,0)
-			elif h < 0.35:
+			elif h < OCEAN_CUTOFFS[1] * height_diff:
 				tile = TILES["Shore"]
 				subtile = Vector2i(3,0)
-			elif h < 0.4:
+			elif h < OCEAN_CUTOFFS[2] * height_diff:
 				tile = TILES["Shore"]
 				subtile = Vector2i(2,0)
-			elif h < 0.45:
+			elif h < OCEAN_CUTOFFS[3] * height_diff:
 				tile = TILES["Shore"]
 				subtile = Vector2i(1,0)
-			elif h < 0.5:
+			elif h < OCEAN_CUTOFFS[4] * height_diff:
 				tile = TILES["Shore"]
 				subtile = Vector2i(0,0)
 			else:

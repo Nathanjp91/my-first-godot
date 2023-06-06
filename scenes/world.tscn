@@ -10,3 +10,4 @@ visible = false
 position = Vector2(557, 373)
 
 [node name="TileMap" parent="." instance=ExtResource("2_jeb0s")]
+EDGE_CUTOFF = 30
