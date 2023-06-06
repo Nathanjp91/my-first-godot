@@ -11,6 +11,7 @@ var TILES = {
 @export var HEIGHT = 200
 @export var WIDTH = 200
 @export var OCEAN_CUTOFFS = [0.3, 0.35, 0.4, 0.45, 0.5]
+@export var MOUNTAIN_CUTOFFS = [0.8, 0.95]
 @export var EDGE_CUTOFF = 20
 var rng = RandomNumberGenerator.new()
 # Called when the node enters the scene tree for the first time.
@@ -77,6 +78,12 @@ func _ready():
 			elif h < OCEAN_CUTOFFS[4] * height_diff:
 				tile = TILES["Shore"]
 				subtile = Vector2i(0,0)
+			elif h > MOUNTAIN_CUTOFFS[1] * height_diff:
+				tile = TILES["Snow"]
+				subtile = Vector2i(4, 0)
+			elif h > MOUNTAIN_CUTOFFS[0] * height_diff:
+				tile = TILES["Snow"]
+				subtile = Vector2i(5, 0)
 			else:
 				tile = TILES["Grass"]
 				subtile = Vector2i(rng.randi_range(0, tile["size"][0] - 1), rng.randi_range(0, tile["size"][1] - 1))
@@ -95,4 +102,4 @@ func _input(event):
 		print(local_to_map(pos))
 		var tile_loc = local_to_map(pos)
 		set_cell(0, tile_loc, 3, Vector2i(1,1))
-		print("Mous Click at: ", event.position)
+		print("Mouse Click at: ", event.position)
